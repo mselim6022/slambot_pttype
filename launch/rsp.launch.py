@@ -9,7 +9,7 @@ from launch_ros.actions import Node
 
 import xacro
 
-
+#Robot State Publisher launch script
 def generate_launch_description():
 
     # Check if we're told to use sim time
