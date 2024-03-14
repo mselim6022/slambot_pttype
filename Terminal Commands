@@ -1,0 +1,60 @@
+//Startup commands:
+//Startup the Robot state publisher and gazebo
+ros2 launch slambot_pttype launch_sim.launch.py world:=~/dev_ws/src/slambot_pttype/worlds/simulation_room.world 
+ros2 launch slambot_pttype launch_sim.launch.py world:=~/dev_ws/src/slambot_pttype/worlds/simulation_room2.world 
+//Startup teleop kb solo
+ros2 run teleop_twist_keyboard teleop_twist_keyboard /cmd_vel:=/diff_cont/cmd_vel_unstamped 
+//Startup telop with nav2
+ros2 run teleop_twist_keyboard teleop_twist_keyboard /cmd_vel:=/cmd_vel_keyb
+
+rviz2
+
+//Twist mux
+ros2 run twist_mux twist_mux --ros-args --params-file ~/dev_ws/src/slambot_pttype/config/twist_mux_params.yaml -r cmd_vel_out:=diff_cont/cmd_vel_unstamped
+
+
+//Run GMapping
+
+ros2 launch slam_gmapping slam_gmapping.launch.py 
+
+//Nav2 bringup
+  ros2 launch nav2_bringup navigation_launch.py use_sim_time:=true
+
+//Run Karto
+
+ros2 launch slam_toolbox online_async_launch.py params_file:=/home/mselim/dev_ws/src/slambot_pttype/config/mapper_params_online_async.yaml 
+
+//Ground Truth Pose of a link (from Gazebo)
+ros2 service call /get_entity_state 'gazebo_msgs/GetEntityState' '{name: "my_bot::base_link", reference_frame: "world"}'
+
+//Save map
+ros2 run nav2_map_server map_saver_cli -t /map -f abcd
+
+Arguments:
+  -h --help
+  -t <map_topic> (/map usually)
+  -f <mapname> (abcd here)
+  --occ <threshold_occupied> (0.65)
+  --free <threshold_free> (0.25)
+  --fmt <image_format> (pgm)
+  --mode trinary(default)/scale/raw
+
+
+//Start publishing Ground Truth Pose from Gazebo:
+ros2 run py_pubsub talker
+
+//Topics of interest:
+/robot_description
+/map
+/odom
+
+//This records the Transform from the Map frame to the Odom Frame
+
+/robot_pose
+
+//On this topic, the ground truth pose obtained from gazebo is published
+
+/entity_pose
+
+//Record entity_pose and robot_pose:
+ros2 bag record /entity_pose /robot_pose
