@@ -12,7 +12,7 @@ const byte encoder1pinB = 41; // Encoder 1 B pin
 volatile long duration1 = 0; // Encoder 1 pulse count
 
 void setup() {
-  Serial.begin(9600); // Start serial communication at 9600 baud rate
+  Serial.begin(57600); // Start serial communication at 9600 baud rate
   Serial.setTimeout(100); // Increase timeout to ensure command is fully received
 
   // Initialize motor speed and stop motors
