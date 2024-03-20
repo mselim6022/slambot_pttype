@@ -1,7 +1,7 @@
 #include <AFMotor.h>
 
-AF_DCMotor motor1(1); // Initialize motor #1 using M1 output
-AF_DCMotor motor2(2); // Initialize motor #2 using M2 output
+AF_DCMotor motor1(2); // Initialize motor #1 using M1 output
+AF_DCMotor motor2(3); // Initialize motor #2 using M2 output
 
 const byte encoder0pinA = 20; // Encoder 0 A pin
 const byte encoder0pinB = 40; // Encoder 0 B pin
