@@ -42,7 +42,13 @@ void loop() {
       }
       int motor1Speed = command.substring(0, spaceIndex).toInt(); // Extract motor1 speed
       int motor2Speed = command.substring(spaceIndex + 1).toInt(); // Extract motor2 speed
-
+      if(motor1Speed > 0 && motor2Speed < 0){
+        motor1Speed *= 3;
+        motor2Speed *= 3;
+      } else if(motor1Speed < 0 && motor2Speed > 0){
+        motor2Speed *= 3;
+        motor1Speed *= 3;
+      }
       //Serial.print("Motor1 Speed: "); // Debug: Print motor1 speed
       //Serial.println(motor1Speed);
       //Serial.print("Motor2 Speed: "); // Debug: Print motor2 speed
